@@ -8,17 +8,29 @@
       "sslPort": 44356
     }
   },
-  "profiles": {
+  //"profiles": {
+  //  "API": {
+  //    "commandName": "Project",
+  //    "dotnetRunMessages": true,
+  //    "launchBrowser": true,
+  //    "launchUrl": "swagger",
+  //    "applicationUrl": "https://localhost:7171;http://localhost:5171",
+  //    "environmentVariables": {
+  //      "ASPNETCORE_ENVIRONMENT": "Development"
+  //    }
+  //  },
+    "profiles": {
     "API": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7171;http://localhost:5171",
+      "applicationUrl": "http://localhost:5171",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
+
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,

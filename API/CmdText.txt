@@ -1,1 +1,7 @@
 ﻿add-migration initial -OutputDir Data/Migrations
+
+
+// React
+npx create-react-app client --template typescript --use-npm
+
+npm install @material-ui/core --force
