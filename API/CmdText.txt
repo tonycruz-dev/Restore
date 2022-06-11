@@ -1,5 +1,7 @@
 ﻿add-migration initial -OutputDir Data/Migrations
 
+add-migration AddBasketEntity
+
 
 // React
 npx create-react-app client --template typescript --use-npm

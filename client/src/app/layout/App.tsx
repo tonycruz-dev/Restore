@@ -1,6 +1,6 @@
 import { CssBaseline, createTheme, ThemeProvider } from "@mui/material";
 import { Container } from "@mui/system";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Route } from "react-router";
 import { Routes } from "react-router-dom";
 import AboutPage from "../../features/about/AboutPage";
@@ -9,13 +9,39 @@ import ProductDetails from "../../features/catalog/ProductDetails";
 import ContactPage from "../../features/contact/ContactPage";
 import HomePage from "../../features/home/HomePage";
 import Header from "./Header";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import ServerError from "../errors/ServerError";
+import NotFound from "../errors/NotFound";
+import BasketPage from "../../features/basket/BasketPage";
+import { useStoreContext } from "../context/StoreContext";
+import { getCookie } from "../util/util";
+import agent from "../api/agent";
+import LoadingComponent from "./LoadingComponent";
+import CheckoutPage from "../../features/checkout/CheckoutPage";
 // interface Props {
 //   produsts: Product
 // }
 
 function App() {
+  const {setBasket} = useStoreContext();
+  const [loading, setLoading]= useState(true);
+
   const [darkMode, setDarkMode] = useState(false);
   const paletteType =  darkMode ? 'dark' : 'light'
+
+useEffect(() => {
+  const buyerId = getCookie('buyerId');
+  if(buyerId) {
+    agent.Basket.get()
+    .then(basket => setBasket(basket))
+    .catch(error => console.log(error))
+    .finally(() => setLoading(false));
+  }
+  else {
+    setLoading(false);
+  }
+},[setBasket])
 
   const theme = createTheme({
     palette: {
@@ -29,9 +55,11 @@ function App() {
 function handleThemeChange() {
   setDarkMode(!darkMode);
 }
+if (loading) return <LoadingComponent message="initializing app ..." />
  // new - v6 <Route path="/" element={<Home />} />
   return (
-    <ThemeProvider  theme={theme}>
+    <ThemeProvider theme={theme}>
+      <ToastContainer position='bottom-right' hideProgressBar theme='colored' />
       <CssBaseline/>
        <Header darkMode={darkMode} handleThemeChange={handleThemeChange} />
        <Container>
@@ -41,6 +69,10 @@ function handleThemeChange() {
            <Route path='/catalog/:id' element={<ProductDetails />} />
            <Route path='/about' element={<AboutPage/>} />
            <Route path='/contact' element={<ContactPage/>} />
+           <Route path='/server-error' element={<ServerError/>} />
+           <Route path='/basket' element={<BasketPage/>} />
+           <Route path='/checkout' element={<CheckoutPage/>} />
+           <Route path='*' element={<NotFound/>} />
         </Routes>
        
        </Container>
